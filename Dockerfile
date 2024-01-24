@@ -1,24 +1,18 @@
-FROM python:3.11
+FROM python:3.11-slim
 
-WORKDIR /app
+ENV PYTHONUNBUFFERED=1
 
-# 必要なシステムパッケージをインストール
-RUN apt-get update && apt-get install -y curl \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+WORKDIR /src
 
-# Poetryをダウンロードしてインストール
-RUN curl -sSL https://install.python-poetry.org | python -
+# pipを使ってpoetryをインストール
+RUN pip install poetry
 
-# Pathを通す
-ENV PATH /root/.local/bin:$PATH
-# 仮想環境をたてない
-RUN poetry config virtualenvs.create false
+# poetryの定義ファイルをコピー (存在する場合)
+COPY pyproject.toml* poetry.lock* ./
 
-# アプリケーションの依存関係をインストール
-COPY pyproject.toml poetry.lock /app/
-RUN poetry install
+# poetryでライブラリをインストール (pyproject.tomlが既にある場合)
+RUN poetry config virtualenvs.in-project true
+RUN if [ -f pyproject.toml ]; then poetry install --no-root; fi
 
-COPY /app /app/app
-
-CMD ["sh", "-c", "set -e; cd /app/app && uvicorn main:app --reload --host 0.0.0.0 --port 8080"]
+# uvicornのサーバーを立ち上げる
+ENTRYPOINT ["poetry", "run", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--reload"]

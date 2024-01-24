@@ -1,0 +1,26 @@
+FROM public.ecr.aws/lambda/python:3.11
+
+WORKDIR /app
+
+# 必要なシステムパッケージをインストール
+RUN yum update -y && yum install -y curl \
+    && rm -rf /var/cache/yum/* \
+    && yum clean all
+
+# Poetryをダウンロードしてインストール
+RUN curl -sSL https://install.python-poetry.org | python -
+
+# Pathを通す
+ENV PATH /root/.local/bin:$PATH
+# 仮想環境をたてない
+RUN poetry config virtualenvs.create false
+
+# アプリケーションの依存関係をインストール
+COPY pyproject.toml poetry.lock /app/
+RUN poetry install
+
+COPY /src /app/src
+
+ENTRYPOINT [ "/usr/local/bin/python", "-m", "awslambdaric" ]
+
+CMD ["main.handler"]

@@ -1,10 +1,9 @@
-version: "3.8"
-
+version: '3'
 services:
-  api:
-    container_name: "api"
-    volumes:
-      - .:/app
+  demo-app:
     build: .
+    volumes:
+      - .dockervenv:/src/.venv
+      - .:/src
     ports:
-      - "8080:8080"
+      - 8000:8000  # ホストマシンのポート8000を、docker内のポート8000に接続する
