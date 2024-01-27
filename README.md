@@ -83,3 +83,9 @@ root_directory内のファイルは現状コピーする必要がなかったの
 ## RUN&COPY, volume, CMDの順番
 RUN&COPY ⇒volume ⇒ CMD
 の順番。
+
+## Docker Imageにどこまで含むか？
+Dockerfile内でpoetry installを実行すれば、Docker Imageにインストールしたパッケージも含まれる。
+CMDでpoetry installすれば、コンテナ立ち上げ時にpoetry installされるので、Docker Imageにはパッケージは含まれない。
+一旦後者で実装。
+ECRとかのAWSサービスはイメージ単位で上げるから、そうすると前者で作らないとダメなんだろうな。

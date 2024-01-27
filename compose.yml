@@ -3,9 +3,11 @@ services:
   demo-app:
     build: .
     volumes:
-      - ./src:/home/hibarashi_user/normalized_order_data/src
-      - ./tests:/home/hibarashi_user/normalized_order_data/tests
-      - ./pyproject.toml:/home/hibarashi_user/normalized_order_data/pyproject.toml
-      - ./poetry.lock:/home/hibarashi_user/normalized_order_data/poetry.lock
+      - .:/home/hibarashi_user/normalized_order_data/
+      # - ./src:/home/hibarashi_user/normalized_order_data/src
+      # - ./tests:/home/hibarashi_user/normalized_order_data/tests
+      # - ./pyproject.toml:/home/hibarashi_user/normalized_order_data/pyproject.toml
+      # - ./poetry.lock:/home/hibarashi_user/normalized_order_data/poetry.lock
+      # - ./start.sh:/home/hibarashi_user/normalized_order_data/start.sh
     ports:
       - 8000:8000  # ホストマシンのポート8000を、docker内のポート8000に接続する

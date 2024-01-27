@@ -23,13 +23,15 @@ ENV PATH=$PATH:/home/hibarashi_user/.local/bin:
 
 # poetryの定義ファイルをコピー (存在する場合)
 # chownを入れないとrootユーザーがownerになってしまうので追加する必要あり。
-COPY --chown=${USER_NAME}:${USER_NAME} pyproject.toml* poetry.lock* ./
+# COPY --chown=${USER_NAME}:${USER_NAME} pyproject.toml* poetry.lock* ./
 
 # poetryでライブラリをインストール (pyproject.tomlが既にある場合)
 # 仮想環境のインストール先は、プロジェクト内にする
-RUN poetry config virtualenvs.in-project true
-RUN if [ -f pyproject.toml ]; then poetry install; fi
+# イメージ作成時はまだ、src内をマウントしていない。なので--no-rootオプションをつけないとエラーになる。
+# RUN poetry config virtualenvs.in-project true
+# RUN if [ -f pyproject.toml ]; then poetry install --no-root; fi
 
 # uvicornのサーバーを立ち上げる
-CMD ["poetry", "run", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--reload"]
+ENTRYPOINT ["bash", "entrypoint.sh"]
+
 
