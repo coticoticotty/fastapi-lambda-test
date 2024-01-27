@@ -1,4 +1,4 @@
-from src.module1 import function1_1
+from module1 import function1_1
 # パッケージ化してないのでまだインポートできない。
 
 def main():

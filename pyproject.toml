@@ -3,13 +3,16 @@ name = "demo-app"
 version = "0.1.2"
 description = ""
 authors = ["Your Name <you@example.com>"]
-readme = "README.md"
+packages = [
+    {include = "module1", from ="src"}
+    {include = "module2", from ="src"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
 fastapi = "^0.109.0"
 uvicorn = {extras = ["standard"], version = "^0.27.0"}
-pandas = "^2.2.0"
+pydifact = "^0.1.6"
 
 
 [tool.poetry.group.dev.dependencies]
