@@ -1,13 +1,35 @@
 version: '3'
 services:
-  demo-app:
+  app_server:
+    depends_on:
+      - db_server
+    container_name: app_server
     build: .
+    networks: 
+      - app_db_network
     volumes:
       - .:/home/hibarashi_user/normalized_order_data/
-      # - ./src:/home/hibarashi_user/normalized_order_data/src
-      # - ./tests:/home/hibarashi_user/normalized_order_data/tests
-      # - ./pyproject.toml:/home/hibarashi_user/normalized_order_data/pyproject.toml
-      # - ./poetry.lock:/home/hibarashi_user/normalized_order_data/poetry.lock
-      # - ./start.sh:/home/hibarashi_user/normalized_order_data/start.sh
     ports:
       - 8000:8000  # ホストマシンのポート8000を、docker内のポート8000に接続する
+
+  db_server:
+    image: postgres:13.8
+    container_name: db_server
+    networks: 
+      - app_db_network
+    environment:
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=db_dev
+    ports:
+      - 5432:5432
+    volumes:
+      - dbvolume:/var/lib/postgresql/data
+      # - ./initdb.d:/docker-entrypoint-initdb.d
+      # - ./sql_scripts:/sql_scripts
+    restart: always
+
+networks:
+  app_db_network:
+volumes:
+  dbvolume:

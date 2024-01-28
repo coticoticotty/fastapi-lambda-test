@@ -6,7 +6,11 @@ authors = ["Your Name <you@example.com>"]
 packages = [
     {include = "module1", from ="src"},
     {include = "module2", from ="src"},
-    {include = "core", from ="src"}
+    {include = "core", from ="src"},
+    {include = "db", from ="src"},
+    {include = "models", from ="src"},
+    {include = "schemas", from ="src"},
+    {include = "crud", from ="src"},
 ]
 
 [tool.poetry.dependencies]
@@ -15,6 +19,8 @@ fastapi = "^0.109.0"
 uvicorn = {extras = ["standard"], version = "^0.27.0"}
 pydifact = "^0.1.6"
 pydantic-settings = "^2.1.0"
+sqlalchemy = "^2.0.25"
+psycopg2-binary = "^2.9.9"
 
 
 [tool.poetry.group.dev.dependencies]
