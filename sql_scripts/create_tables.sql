@@ -1,7 +1,17 @@
-drop table if exists test_table;
-create table test_table(
-    user_id varchar(20) not null
-    , user_name varchar(30)
-	, created_timestamp timestamp
-    , primary key (user_id)
-);
+-- DB作成
+CREATE DATABASE db_dev; 
+
+-- 作成したDBへ切り替え
+\c db_dev
+
+-- ロールの作成
+CREATE ROLE dev WITH LOGIN PASSWORD 'root';
+
+-- DB作成
+CREATE DATABASE db_unittest; 
+
+-- 作成したDBへ切り替え
+\c db_unittest
+
+-- ロールの作成
+CREATE ROLE dev WITH LOGIN PASSWORD 'root';

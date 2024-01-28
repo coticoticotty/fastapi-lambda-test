@@ -25,8 +25,8 @@ services:
       - 5432:5432
     volumes:
       - dbvolume:/var/lib/postgresql/data
-      # - ./initdb.d:/docker-entrypoint-initdb.d
-      # - ./sql_scripts:/sql_scripts
+      - ./initdb.d:/docker-entrypoint-initdb.d
+      - ./sql_scripts:/sql_scripts
     restart: always
 
 networks:
