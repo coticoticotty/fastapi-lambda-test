@@ -2,7 +2,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
-
+import pytest
 from core.config import settings
 from db.database import Base, get_db
 from main import app
@@ -29,6 +29,26 @@ app.dependency_overrides[get_db] = override_get_db
 
 client = TestClient(app)
 
+# @pytest.fixture(scope='session')
+# def engine():
+#     return create_engine(TEST_DATABASE_URI)
+
+# @pytest.fixture(scope='session')
+# def tables(engine):
+#     Base.metadata.create_all(engine)
+#     yield
+#     Base.metadata.drop_all(engine)
+
+# @pytest.fixture
+# def db_session(engine, tables):
+#     """セッションを作成し、テスト後にクリーンアップする"""
+#     connection = engine.connect()
+#     transaction = connection.begin()
+#     session = sessionmaker()(bind=connection)
+#     yield session
+#     session.close()
+#     transaction.rollback()
+#     connection.close()
 
 def test_create_user():
     response = client.post(
